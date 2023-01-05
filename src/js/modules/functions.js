@@ -1,3 +1,6 @@
+export const BOMB = "&#x1F4A3";
+export const FLAG = "&#128681";
+
 export function createElement(tagName, className) {
   const element = document.createElement(tagName);
   element.className = className;
@@ -11,78 +14,62 @@ export function getRandomInt(max) {
 export function showMines(array) {
   array.forEach((element) => {
     element.forEach((item) => {
-      if (item.classList.contains("mine")) {
-        item.innerHTML = "&#x1F4A3";
+      if (item.getAttribute("data-mine") === "1") {
+        item.innerHTML = BOMB;
         item.style.backgroundColor = "red";
       }
     });
   });
 }
 
-export function minesAroundCell(cell, cellArray) {
+export function minesAroundCell(cellRow, cellColumn, cell, cellArray) {
   let minesAround = 0;
-  let dataColumn = +cell.getAttribute("data-column");
-  let dataRow = +cell.getAttribute("data-row");
   cellArray.forEach((element) => {
     if (
-      +element.getAttribute("data-row") ===
-        +cell.getAttribute("data-row") - 1 &&
-      +element.getAttribute("data-column") ===
-        +cell.getAttribute("data-column") - 1 &&
+      +element.getAttribute("data-row") === +cellRow - 1 &&
+      +element.getAttribute("data-column") === +cellColumn - 1 &&
       +element.getAttribute("data-mine") === 1
     ) {
       minesAround++;
     } else if (
-      +element.getAttribute("data-row") ===
-        +cell.getAttribute("data-row") - 1 &&
-      +element.getAttribute("data-column") ===
-        +cell.getAttribute("data-column") &&
+      +element.getAttribute("data-row") === +cellRow - 1 &&
+      +element.getAttribute("data-column") === +cellColumn &&
       +element.getAttribute("data-mine") === 1
     ) {
       minesAround++;
     } else if (
-      +element.getAttribute("data-row") ===
-        +cell.getAttribute("data-row") - 1 &&
-      +element.getAttribute("data-column") ===
-        +cell.getAttribute("data-column") + 1 &&
+      +element.getAttribute("data-row") === +cellRow - 1 &&
+      +element.getAttribute("data-column") === +cellColumn + 1 &&
       +element.getAttribute("data-mine") === 1
     ) {
       minesAround++;
     } else if (
-      +element.getAttribute("data-row") === +cell.getAttribute("data-row") &&
-      +element.getAttribute("data-column") ===
-        +cell.getAttribute("data-column") - 1 &&
+      +element.getAttribute("data-row") === +cellRow &&
+      +element.getAttribute("data-column") === +cellColumn - 1 &&
       +element.getAttribute("data-mine") === 1
     ) {
       minesAround++;
     } else if (
-      +element.getAttribute("data-row") === +cell.getAttribute("data-row") &&
-      +element.getAttribute("data-column") ===
-        +cell.getAttribute("data-column") + 1 &&
+      +element.getAttribute("data-row") === +cellRow &&
+      +element.getAttribute("data-column") === +cellColumn + 1 &&
       +element.getAttribute("data-mine") === 1
     ) {
       minesAround++;
     } else if (
-      +element.getAttribute("data-row") ===
-        +cell.getAttribute("data-row") + 1 &&
-      +element.getAttribute("data-column") ===
-        +cell.getAttribute("data-column") - 1 &&
+      +element.getAttribute("data-row") === +cellRow + 1 &&
+      +element.getAttribute("data-column") === +cellColumn - 1 &&
       +element.getAttribute("data-mine") === 1
     ) {
       minesAround++;
     } else if (
-      +element.getAttribute("data-row") ===
-        +cell.getAttribute("data-row") + 1 &&
-      +element.getAttribute("data-column") ===
-        +cell.getAttribute("data-column") &&
+      +element.getAttribute("data-row") === +cellRow + 1 &&
+      +element.getAttribute("data-column") === +cellColumn &&
       +element.getAttribute("data-mine") === 1
     ) {
       minesAround++;
     } else if (
-      +element.getAttribute("data-row") ===
-        +cell.getAttribute("data-row") + 1 &&
-      +element.getAttribute("data-column") ===
-        +cell.getAttribute("data-column") + 1 &&
+      +element.getAttribute("data-row") === +cellRow + 1 &&
+      +element.getAttribute("data-column") === +cellColumn + 1 &&
       +element.getAttribute("data-mine") === 1
     ) {
       minesAround++;

@@ -3,6 +3,8 @@ import {
   getRandomInt,
   showMines,
   minesAroundCell,
+  BOMB,
+  FLAG,
 } from "./modules/functions.js";
 
 const app = document.getElementById("app");
@@ -42,16 +44,8 @@ function createCellsGrid(columns, rows) {
   ) {
     cellArray[getRandomInt(cellArray.length)][
       getRandomInt(cellArray[0].length)
-    ].classList.add("mine");
+    ].dataset.mine = "1";
   }
-
-  cellArray.forEach((element) => {
-    element.forEach((item) => {
-      if (item.classList.contains("mine")) {
-        item.setAttribute("data-mine", "1");
-      }
-    });
-  });
 }
 
 buttonReset.addEventListener("clisk", () => {
@@ -83,12 +77,17 @@ buttonStart.addEventListener("click", (e) => {
 
   cellNodesArray.forEach((cell) => {
     cell.addEventListener("click", () => {
-      if (cell.classList.contains("mine")) {
+      if (cell.getAttribute("data-mine") === "1") {
         showMines(cellArray);
       }
-      if (!cell.classList.contains("mine")) {
+      if (cell.getAttribute("data-mine") === "0") {
         cell.style.backgroundColor = "pink";
-        minesAroundCell(cell, cellNodesArray);
+        minesAroundCell(
+          cell.getAttribute("data-row"),
+          cell.getAttribute("data-column"),
+          cell,
+          cellNodesArray
+        );
       }
     });
   });
@@ -107,7 +106,7 @@ buttonStart.addEventListener("click", (e) => {
         if (element.dataset.flag === "0") {
           element.dataset.flag = "1";
           element.innerHTML = "";
-          element.innerHTML = "&#128681";
+          element.innerHTML = FLAG;
           flagsCounter++;
           flags.innerText = `Количество установленных флагов: ${flagsCounter}`;
         } else if (element.dataset.flag === "1") {
@@ -119,6 +118,4 @@ buttonStart.addEventListener("click", (e) => {
       });
     });
   }
-  console.log(cellNodesArray);
-  console.log(cellArray);
 });
