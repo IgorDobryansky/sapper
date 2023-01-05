@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/style.min.css?_v=20230105214820" />
+  <title>Главная</title>
+</head>
+
+  <body>
+    <div id="app">
+      <form>
+        <fieldset>
+          <legend>
+            <label for="columns">Введите количество столбцов (минимум 8)</label>
+          </legend>
+          <input type="number" class="columns" id="columns" />
+        </fieldset>
+        <fieldset>
+          <legend>
+            <label for="rows">Введите количество строк (минимум 8)</label>
+          </legend>
+          <input type="number" class="rows" id="rows" />
+        </fieldset>
+        <button class="start">Начать игру</button>
+        <button class="reset">Сбросить игру</button>
+      </form>
+      <div class="information">
+        <p class="flags">Количество установленных флагов: 0</p>
+        <p class="mines">Количество мин: 0</p>
+      </div>
+    </div>
+    <script src="js/app.min.js?_v=20230105214820"></script>
+  </body>
+</html>

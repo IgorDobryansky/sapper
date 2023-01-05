@@ -1,0 +1,61 @@
+@import "reset";
+@import "fonts";
+
+#app {
+  padding-top: 50px;
+  background-color: cadetblue;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  form {
+    fieldset {
+      border: 1px solid black;
+      padding: 6px;
+      width: 300px;
+      margin-top: 20px;
+      input {
+        width: 50px;
+      }
+    }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    label,
+    button {
+      margin-top: 20px;
+    }
+    button {
+      width: 150px;
+      padding: 5px;
+    }
+  }
+  .information {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .mines {
+      margin-top: 10px;
+    }
+  }
+  .mine-field {
+    margin-top: 20px;
+    display: grid;
+    gap: 5px;
+    .cell {
+      cursor: pointer;
+      width: 35px;
+      height: 35px;
+      background-color: aqua;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px;
+      &:hover {
+        border: 2px solid black;
+      }
+    }
+  }
+}
