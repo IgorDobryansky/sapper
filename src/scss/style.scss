@@ -20,12 +20,27 @@
     align-items: center;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
-    &-video{
+    &-video {
       width: 100%;
-      max-width: 500px;
+      max-width: 300px;
+      animation: 1000ms linear rotate infinite;
     }
-    .again-button{
-      margin-top: 15px;
+    @keyframes rotate {
+      0% {
+        rotate: 0deg;
+        scale: 1;
+      }
+      50% {
+        rotate: 180deg;
+        scale: 1.5;
+      }
+      100% {
+        rotate: 360deg;
+        scale: 1;
+      }
+    }
+    .again-button {
+      margin-top: 100px;
       width: 150px;
       padding: 5px;
     }

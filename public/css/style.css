@@ -156,11 +156,29 @@ h6 {
 
 #app .win-video {
   width: 100%;
-  max-width: 500px;
+  max-width: 300px;
+  animation: 1000ms linear rotate infinite;
+}
+
+@keyframes rotate {
+  0% {
+    rotate: 0deg;
+    scale: 1;
+  }
+
+  50% {
+    rotate: 180deg;
+    scale: 1.5;
+  }
+
+  100% {
+    rotate: 360deg;
+    scale: 1;
+  }
 }
 
 #app .win .again-button {
-  margin-top: 15px;
+  margin-top: 100px;
   width: 150px;
   padding: 5px;
 }
