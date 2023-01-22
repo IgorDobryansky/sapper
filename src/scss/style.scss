@@ -2,14 +2,36 @@
 @import "fonts";
 
 #app {
-  padding-top: 50px;
+  position: relative;
   background-color: cadetblue;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   height: 100vh;
+  .win {
+    position: absolute;
+    padding: 0 10px;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    &-video{
+      width: 100%;
+      max-width: 500px;
+    }
+    .again-button{
+      margin-top: 15px;
+      width: 150px;
+      padding: 5px;
+    }
+  }
   form {
+    margin-top: 50px;
     fieldset {
       border: 1px solid black;
       padding: 6px;

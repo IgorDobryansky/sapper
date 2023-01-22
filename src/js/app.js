@@ -19,11 +19,25 @@ const mineField = createElement("div", "mine-field");
 
 app.append(mineField);
 
-let flagsCounter = 0;
+let flagsCounter;
 let minesCounter = 0;
 const cellArray = [];
 
 function createCellsGrid(columns, rows) {
+  flagsCounter = 0;
+  if (columnsInput.value <= 7 || rowsInput.value <= 7) {
+    alert("Размеры поля слишком маленькие.");
+    return;
+  }
+
+  mineField.innerHTML = "";
+
+  minesCounter = 0;
+
+  mineField.style.gridTemplateColumns = `repeat(${columnsInput.value}, 1fr)`;
+
+  let cellCount = 0;
+
   for (let x = 0; x < rows; x++) {
     cellArray[x] = [];
     for (let y = 0; y < columns; y++) {
@@ -33,37 +47,20 @@ function createCellsGrid(columns, rows) {
       cell.setAttribute("data-row", `${x}`);
       cell.setAttribute("data-column", `${y}`);
       mineField.append(cell);
+      cellCount++;
       cellArray[x].push(cell);
     }
   }
 
   for (
     let i = 0;
-    i < Math.floor((rowsInput.value * columnsInput.value) / 6);
+    i < Math.round((rowsInput.value * columnsInput.value) / 6);
     i++
   ) {
     cellArray[getRandomInt(cellArray.length)][
       getRandomInt(cellArray[0].length)
     ].dataset.mine = "1";
   }
-}
-
-buttonReset.addEventListener("clisk", () => {
-  flagsCounter = 0;
-  minesCounter = 0;
-});
-
-buttonStart.addEventListener("click", (e) => {
-  e.preventDefault();
-
-  mineField.innerHTML = "";
-
-  if (columnsInput.value <= 7 || rowsInput.value <= 7) return;
-
-  mineField.style.gridTemplateColumns = `repeat(${columnsInput.value}, 1fr)`;
-  mineField.style.gridTemplateColumns = `repeat(${rowsInput.value}, 1fr)`;
-
-  createCellsGrid(columnsInput.value, rowsInput.value);
 
   cellArray.forEach((element) => {
     element.forEach((item) => {
@@ -73,49 +70,78 @@ buttonStart.addEventListener("click", (e) => {
     });
   });
 
-  const cellNodesArray = Array.from(document.querySelectorAll(".cell"));
+  const cellsArray = document.querySelectorAll(".cell");
 
-  cellNodesArray.forEach((cell) => {
-    cell.addEventListener("click", () => {
-      if (cell.getAttribute("data-mine") === "1") {
-        showMines(cellArray);
-      }
-      if (cell.getAttribute("data-mine") === "0") {
-        cell.style.backgroundColor = "pink";
-        minesAroundCell(
-          cell.getAttribute("data-row"),
-          cell.getAttribute("data-column"),
-          cell,
-          cellNodesArray
-        );
-      }
-    });
-  });
+  let isFirstClick = true;
 
-  mines.innerText = `Количество мин: ${minesCounter}`;
+  let openCellCount = 0;
 
-  for (let x = 0; x < cellArray.length; x++) {
-    cellArray[x].forEach((element) => {
-      element.addEventListener("contextmenu", (e) => {
+  cellArray.forEach((row, rowIndex) => {
+    row.forEach((cell, columnIndex) => {
+      cell.addEventListener("click", () => {
+        if (cell.getAttribute("data-mine") === "1" && isFirstClick) {
+          createCellsGrid(columnsInput.value, rowsInput.value);
+        }
+        if (cell.getAttribute("data-mine") === "1" && !isFirstClick) {
+          showMines(cellArray);
+        }
+        if (cell.getAttribute("data-mine") === "0") {
+          isFirstClick = false;
+          cell.style.backgroundColor = "pink";
+          openCellCount++;
+          console.log(openCellCount);
+          minesAroundCell(rowIndex, columnIndex, cell, cellsArray);
+        }
+        if (openCellCount === cellCount - minesCounter) {
+          const winModalWindow = createElement("div", "win");
+          const winVideo = createElement("video", "win-video");
+          const startAgain = createElement("button", "again-button");
+          winVideo.src = "@files/videoplayback.mp4";
+          winVideo.setAttribute("autoplay", "true");
+          winVideo.setAttribute("loop", "true");
+          startAgain.innerText = "Закрыть и начать заного";
+          winModalWindow.append(winVideo, startAgain);
+          startAgain.addEventListener("click", () => {
+            document.location.reload();
+          });
+          app.append(winModalWindow);
+        }
+      });
+
+      cell.addEventListener("contextmenu", (e) => {
         e.preventDefault();
         if (
-          element.style.backgroundColor === "red" ||
-          element.style.backgroundColor === "pink"
+          cell.style.backgroundColor === "red" ||
+          cell.style.backgroundColor === "pink"
         )
           return;
-        if (element.dataset.flag === "0") {
-          element.dataset.flag = "1";
-          element.innerHTML = "";
-          element.innerHTML = FLAG;
+        if (cell.dataset.flag === "0") {
+          cell.dataset.flag = "1";
+          cell.innerHTML = "";
+          cell.innerHTML = FLAG;
           flagsCounter++;
           flags.innerText = `Количество установленных флагов: ${flagsCounter}`;
-        } else if (element.dataset.flag === "1") {
-          element.dataset.flag = "0";
-          element.innerHTML = "";
+        } else if (cell.dataset.flag === "1") {
+          cell.dataset.flag = "0";
+          cell.innerHTML = "";
           flagsCounter--;
           flags.innerText = `Количество установленных флагов: ${flagsCounter}`;
         }
       });
     });
-  }
+  });
+
+  mines.innerText = `Количество мин: ${minesCounter}`;
+}
+
+buttonReset.addEventListener("click", () => {
+  flagsCounter = 0;
+  minesCounter = 0;
+});
+
+buttonStart.addEventListener("click", (e) => {
+  e.preventDefault();
+  flagsCounter = 0;
+  minesCounter = 0;
+  createCellsGrid(columnsInput.value, rowsInput.value);
 });

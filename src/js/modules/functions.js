@@ -24,6 +24,7 @@ export function showMines(array) {
 
 export function minesAroundCell(cellRow, cellColumn, cell, cellArray) {
   let minesAround = 0;
+
   cellArray.forEach((element) => {
     if (
       +element.getAttribute("data-row") === +cellRow - 1 &&
@@ -75,5 +76,7 @@ export function minesAroundCell(cellRow, cellColumn, cell, cellArray) {
       minesAround++;
     }
   });
+  cell.innerHTML = "";
   cell.innerHTML = minesAround;
 }
+
