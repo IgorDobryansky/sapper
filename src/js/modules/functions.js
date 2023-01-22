@@ -79,4 +79,3 @@ export function minesAroundCell(cellRow, cellColumn, cell, cellArray) {
   cell.innerHTML = "";
   cell.innerHTML = minesAround;
 }
-

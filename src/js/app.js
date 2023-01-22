@@ -20,23 +20,31 @@ const mineField = createElement("div", "mine-field");
 app.append(mineField);
 
 let flagsCounter;
-let minesCounter = 0;
+let minesCounter;
 const cellArray = [];
 
 function createCellsGrid(columns, rows) {
   flagsCounter = 0;
-  if (columnsInput.value <= 7 || rowsInput.value <= 7) {
-    alert("Размеры поля слишком маленькие.");
-    return;
-  }
-
-  mineField.innerHTML = "";
 
   minesCounter = 0;
 
-  mineField.style.gridTemplateColumns = `repeat(${columnsInput.value}, 1fr)`;
+  mineField.innerHTML = "";
 
   let cellCount = 0;
+
+  let isFirstClick = true;
+
+  let openCellCount = 0;
+
+  if (columnsInput.value <= 7 || rowsInput.value <= 7) {
+    alert("Размеры поля слишком маленькие.");
+    return;
+  } else if (columnsInput.value > 16 || rowsInput.value > 16) {
+    alert("Размеры поля слишком большие.");
+    return;
+  }
+
+  mineField.style.gridTemplateColumns = `repeat(${columnsInput.value}, 1fr)`;
 
   for (let x = 0; x < rows; x++) {
     cellArray[x] = [];
@@ -72,10 +80,6 @@ function createCellsGrid(columns, rows) {
 
   const cellsArray = document.querySelectorAll(".cell");
 
-  let isFirstClick = true;
-
-  let openCellCount = 0;
-
   cellArray.forEach((row, rowIndex) => {
     row.forEach((cell, columnIndex) => {
       cell.addEventListener("click", () => {
@@ -89,7 +93,6 @@ function createCellsGrid(columns, rows) {
           isFirstClick = false;
           cell.style.backgroundColor = "pink";
           openCellCount++;
-          console.log(openCellCount);
           minesAroundCell(rowIndex, columnIndex, cell, cellsArray);
         }
         if (openCellCount === cellCount - minesCounter) {
