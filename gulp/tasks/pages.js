@@ -1,9 +1,9 @@
 import fileinclude from "gulp-file-include";
 import versionNumber from "gulp-version-number";
 
-export const html = () => {
+export const pages = () => {
   return app.gulp
-    .src(app.path.src.html)
+    .src(app.path.src.pages)
     .pipe(
       app.plugins.plumber(
         app.plugins.notify.onError({
@@ -13,8 +13,10 @@ export const html = () => {
       )
     )
     .pipe(fileinclude())
-    .pipe(app.plugins.replace(/@img\//g, "img/"))
-    .pipe(app.plugins.replace(/@pages\//g, "pages/"))
+    .pipe(app.plugins.replace(/@img\//g, "../img/"))
+    .pipe(app.plugins.replace(/@public\//g, "../"))
+    .pipe(app.plugins.replace(/css\//g, "../css/"))
+    .pipe(app.plugins.replace(/js\//g, "../js/"))
     .pipe(
       app.plugins.if(
         app.isBuild,
@@ -31,6 +33,6 @@ export const html = () => {
         })
       )
     )
-    .pipe(app.gulp.dest(app.path.build.html))
+    .pipe(app.gulp.dest(app.path.build.pages))
     .pipe(app.plugins.browsersync.stream());
 };

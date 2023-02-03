@@ -15,6 +15,7 @@ global.app = {
 import { copy } from "./gulp/tasks/copy.js";
 import { reset } from "./gulp/tasks/reset.js";
 import { html } from "./gulp/tasks/html.js";
+import { pages } from "./gulp/tasks/pages.js";
 import { server } from "./gulp/tasks/server.js";
 import { scss } from "./gulp/tasks/scss.js";
 import { js } from "./gulp/tasks/js.js";
@@ -34,7 +35,7 @@ const fonts = gulp.series(otfToTtf, ttfToWoff, fontsStyle);
 
 const mainTasks = gulp.series(
   fonts,
-  gulp.parallel(copy, html, scss, js, images)
+  gulp.parallel(copy, html, pages, scss, js, images)
 );
 
 const dev = gulp.series(reset, mainTasks, gulp.parallel(watcher, server));

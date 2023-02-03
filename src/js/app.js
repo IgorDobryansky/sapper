@@ -2,9 +2,9 @@ import {
   createElement,
   getRandomInt,
   showMines,
-  minesAroundCell,
   BOMB,
   FLAG,
+  openEmptyCells,
 } from "./modules/functions.js";
 
 const app = document.getElementById("app");
@@ -21,20 +21,21 @@ app.append(mineField);
 
 let flagsCounter;
 let minesCounter;
-const cellArray = [];
+let cellArray;
 
 function createCellsGrid(columns, rows) {
+  cellArray = [];
   flagsCounter = 0;
 
   minesCounter = 0;
-
-  mineField.innerHTML = "";
 
   let cellCount = 0;
 
   let isFirstClick = true;
 
   let openCellCount = 0;
+
+  mineField.innerHTML = "";
 
   if (columnsInput.value <= 7 || rowsInput.value <= 7) {
     alert("Размеры поля слишком маленькие.");
@@ -77,25 +78,24 @@ function createCellsGrid(columns, rows) {
       }
     });
   });
-
   const cellsArray = document.querySelectorAll(".cell");
-
   cellArray.forEach((row, rowIndex) => {
     row.forEach((cell, columnIndex) => {
       cell.addEventListener("click", () => {
         if (cell.getAttribute("data-mine") === "1" && isFirstClick) {
           createCellsGrid(columnsInput.value, rowsInput.value);
-        }
-        if (cell.getAttribute("data-mine") === "1" && !isFirstClick) {
+        } else if (cell.getAttribute("data-mine") === "1" && !isFirstClick) {
           showMines(cellArray);
-        }
-        if (cell.getAttribute("data-mine") === "0") {
+        } else if (cell.getAttribute("data-mine") === "0") {
           isFirstClick = false;
-          cell.style.backgroundColor = "pink";
           openCellCount++;
-          minesAroundCell(rowIndex, columnIndex, cell, cellsArray);
-        }
-        if (openCellCount === cellCount - minesCounter) {
+          const minesAround = openEmptyCells(
+            rowIndex,
+            columnIndex,
+            cellArray,
+            cellsArray
+          );
+        } else if (openCellCount === cellCount - minesCounter) {
           const winModalWindow = createElement("div", "win");
           const winVideo = createElement("video", "win-video");
           const startAgain = createElement("button", "again-button");

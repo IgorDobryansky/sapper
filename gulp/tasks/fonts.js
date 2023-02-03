@@ -59,6 +59,9 @@ export const fontsStyle = () => {
             let fontWeight = fontFileName.split("-")[1]
               ? fontFileName.split("-")[1]
               : fontFileName;
+            let fontStyle = fontFileName.split("-")[2]
+              ? fontFileName.split("-")[2]
+              : "normal";
             if (fontWeight.toLowerCase() === "thin") {
               fontWeight = 100;
             } else if (fontWeight.toLowerCase() === "extrlight") {
@@ -81,10 +84,9 @@ export const fontsStyle = () => {
             } else {
               fontWeight = 400;
             }
-            console.log(fontsFile);
             fs.appendFile(
               fontsFile,
-              `@font-face {\n\tfont-family: ${fontName};\n\tfont-display: swap;\n\tsrc: url("../fonts/${fontFileName}.woff2") format("woff2"), url("../fonts/${fontFileName}.woff") format("woff");\n\tfont-weight: ${fontWeight};\n\tfont-style: normal;\n}\r\n`,
+              `@font-face {\n\tfont-family: ${fontName};\n\tsrc: url("../fonts/${fontFileName}.woff2") format("woff2"), url("../fonts/${fontFileName}.woff") format("woff");\n\tfont-weight: ${fontWeight};\n\tfont-style: ${fontStyle.toLowerCase()};\n}\r\n`,
               cb
             );
             newFileOnly = fontFileName;
