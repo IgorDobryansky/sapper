@@ -89,12 +89,7 @@ function createCellsGrid(columns, rows) {
         } else if (cell.getAttribute("data-mine") === "0") {
           isFirstClick = false;
           openCellCount++;
-          const minesAround = openEmptyCells(
-            rowIndex,
-            columnIndex,
-            cellArray,
-            cellsArray
-          );
+          openEmptyCells(rowIndex, columnIndex, cellArray, openCellCount);
         } else if (openCellCount === cellCount - minesCounter) {
           const winModalWindow = createElement("div", "win");
           const winVideo = createElement("video", "win-video");

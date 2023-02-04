@@ -8,7 +8,8 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  height: 100vh;
+  height: 100%;
+  padding: 10px;
   .win {
     position: absolute;
     padding: 0 10px;
@@ -46,12 +47,11 @@
     }
   }
   form {
-    margin-top: 50px;
     fieldset {
       border: 1px solid black;
       padding: 6px;
       width: 300px;
-      margin-top: 20px;
+      margin-top: 10px;
       input {
         width: 50px;
       }
@@ -61,7 +61,7 @@
     align-items: center;
     label,
     button {
-      margin-top: 20px;
+      margin-top: 10px;
     }
     button {
       width: 150px;
@@ -72,13 +72,12 @@
     margin-top: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     .mines {
       margin-top: 10px;
     }
   }
   .mine-field {
-    margin-top: 20px;
+    margin-top: 10px;
     display: grid;
     gap: 5px;
     .cell {

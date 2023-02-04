@@ -22,64 +22,69 @@ export function showMines(array) {
   });
 }
 
-function minesAroundCell(rowIndex, columnIndex, array, cellsArray) {
+function minesAroundCell(rowIndex, columnIndex, array) {
   let minesAround = 0;
 
-  cellsArray.forEach((element) => {
-    if (
-      +element.getAttribute("data-row") === +rowIndex - 1 &&
-      +element.getAttribute("data-column") === +columnIndex - 1 &&
-      +element.getAttribute("data-mine") === 1
-    ) {
-      minesAround++;
-    } else if (
-      +element.getAttribute("data-row") === +rowIndex - 1 &&
-      +element.getAttribute("data-column") === +columnIndex &&
-      +element.getAttribute("data-mine") === 1
-    ) {
-      minesAround++;
-    } else if (
-      +element.getAttribute("data-row") === +rowIndex - 1 &&
-      +element.getAttribute("data-column") === +columnIndex + 1 &&
-      +element.getAttribute("data-mine") === 1
-    ) {
-      minesAround++;
-    } else if (
-      +element.getAttribute("data-row") === +rowIndex &&
-      +element.getAttribute("data-column") === +columnIndex - 1 &&
-      +element.getAttribute("data-mine") === 1
-    ) {
-      minesAround++;
-    } else if (
-      +element.getAttribute("data-row") === +rowIndex &&
-      +element.getAttribute("data-column") === +columnIndex + 1 &&
-      +element.getAttribute("data-mine") === 1
-    ) {
-      minesAround++;
-    } else if (
-      +element.getAttribute("data-row") === +rowIndex + 1 &&
-      +element.getAttribute("data-column") === +columnIndex - 1 &&
-      +element.getAttribute("data-mine") === 1
-    ) {
-      minesAround++;
-    } else if (
-      +element.getAttribute("data-row") === +rowIndex + 1 &&
-      +element.getAttribute("data-column") === +columnIndex &&
-      +element.getAttribute("data-mine") === 1
-    ) {
-      minesAround++;
-    } else if (
-      +element.getAttribute("data-row") === +rowIndex + 1 &&
-      +element.getAttribute("data-column") === +columnIndex + 1 &&
-      +element.getAttribute("data-mine") === 1
-    ) {
-      minesAround++;
-    }
-  });
+  if (
+    array.includes(array[rowIndex]) &&
+    array[rowIndex].includes(array[rowIndex][columnIndex - 1]) &&
+    +array[rowIndex][columnIndex - 1].getAttribute("data-mine") === 1
+  ) {
+    minesAround++;
+  }
+  if (
+    array.includes(array[rowIndex - 1]) &&
+    array[rowIndex - 1].includes(array[rowIndex - 1][columnIndex - 1]) &&
+    +array[rowIndex - 1][columnIndex - 1].getAttribute("data-mine") === 1
+  ) {
+    minesAround++;
+  }
+  if (
+    array.includes(array[rowIndex - 1]) &&
+    array[rowIndex - 1].includes(array[rowIndex - 1][columnIndex]) &&
+    +array[rowIndex - 1][columnIndex].getAttribute("data-mine") === 1
+  ) {
+    minesAround++;
+  }
+  if (
+    array.includes(array[rowIndex - 1]) &&
+    array[rowIndex - 1].includes(array[rowIndex - 1][columnIndex + 1]) &&
+    +array[rowIndex - 1][columnIndex + 1].getAttribute("data-mine") === 1
+  ) {
+    minesAround++;
+  }
+  if (
+    array.includes(array[rowIndex]) &&
+    array[rowIndex].includes(array[rowIndex][columnIndex + 1]) &&
+    +array[rowIndex][columnIndex + 1].getAttribute("data-mine") === 1
+  ) {
+    minesAround++;
+  }
+  if (
+    array.includes(array[rowIndex + 1]) &&
+    array[rowIndex + 1].includes(array[rowIndex + 1][columnIndex - 1]) &&
+    +array[rowIndex + 1][columnIndex - 1].getAttribute("data-mine") === 1
+  ) {
+    minesAround++;
+  }
+  if (
+    array.includes(array[rowIndex + 1]) &&
+    array[rowIndex + 1].includes(array[rowIndex + 1][columnIndex]) &&
+    +array[rowIndex + 1][columnIndex].getAttribute("data-mine") === 1
+  ) {
+    minesAround++;
+  }
+  if (
+    array.includes(array[rowIndex + 1]) &&
+    array[rowIndex + 1].includes(array[rowIndex + 1][columnIndex + 1]) &&
+    +array[rowIndex + 1][columnIndex + 1].getAttribute("data-mine") === 1
+  ) {
+    minesAround++;
+  }
 
   array[rowIndex][columnIndex].innerHTML = "";
   if (minesAround === 0) {
-    array[rowIndex][columnIndex].style.backgroundColor = "cadetblue";
+    array[rowIndex][columnIndex].style.opacity = 0;
   } else {
     array[rowIndex][columnIndex].style.backgroundColor = "pink";
     array[rowIndex][columnIndex].innerHTML = minesAround;
@@ -88,64 +93,59 @@ function minesAroundCell(rowIndex, columnIndex, array, cellsArray) {
   return minesAround;
 }
 
-export function openEmptyCells(rowIndex, columnIndex, array, cellsArray) {
-  const isMinesAround = minesAroundCell(...arguments);
-  if (isMinesAround > 0) return isMinesAround;
-  openEmptyLeft(rowIndex, columnIndex - 1, array, cellsArray);
-  openEmptyRight(rowIndex, columnIndex + 1, array, cellsArray);
-  openEmptyTop(rowIndex - 1, columnIndex, array, cellsArray);
-  openEmptyBottom(rowIndex + 1, columnIndex, array, cellsArray);
+export function openEmptyCells(rowIndex, columnIndex, array) {
+  const isMinesAround = minesAroundCell(rowIndex, columnIndex, array);
+  if (isMinesAround > 0) return;
+  openEmptyLeft(rowIndex, columnIndex - 1, array);
+  openEmptyRight(rowIndex, columnIndex + 1, array);
+  openEmptyTop(rowIndex - 1, columnIndex, array);
+  openEmptyBottom(rowIndex + 1, columnIndex, array);
 }
 
-function openEmptyLeft(rowIndex, columnIndex, array, cellsArray) {
+function openEmptyLeft(rowIndex, columnIndex, array) {
   if (columnIndex < 0) return;
 
-  const isMinesAround = minesAroundCell(
-    rowIndex,
-    columnIndex,
-    array,
-    cellsArray
-  );
+  if (+array[rowIndex][columnIndex].getAttribute("data-mine") === 1) return;
+
+  const isMinesAround = minesAroundCell(rowIndex, columnIndex, array);
 
   if (isMinesAround > 0) return;
 
-  openEmptyLeft(rowIndex, columnIndex - 1, array, cellsArray);
-  openEmptyTop(rowIndex - 1, columnIndex, array, cellsArray);
-  openEmptyBottom(rowIndex + 1, columnIndex, array, cellsArray);
+  openEmptyLeft(rowIndex, columnIndex - 1, array);
+  // openEmptyTop(rowIndex - 1, columnIndex, array);
+  // openEmptyBottom(rowIndex + 1, columnIndex, array);
 }
 
-function openEmptyRight(rowIndex, columnIndex, array, cellsArray) {
+function openEmptyRight(rowIndex, columnIndex, array) {
   if (columnIndex === array[0].length) return;
+  if (+array[rowIndex][columnIndex].getAttribute("data-mine") === 1) return;
 
-  const isMinesAround = minesAroundCell(
-    rowIndex,
-    columnIndex,
-    array,
-    cellsArray
-  );
+  const isMinesAround = minesAroundCell(rowIndex, columnIndex, array);
   if (isMinesAround > 0) return;
 
-  openEmptyRight(rowIndex, columnIndex + 1, array, cellsArray);
-  openEmptyTop(rowIndex - 1, columnIndex, array, cellsArray);
-  openEmptyBottom(rowIndex + 1, columnIndex, array, cellsArray);
+  openEmptyRight(rowIndex, columnIndex + 1, array);
+  // openEmptyTop(rowIndex - 1, columnIndex, array);
+  // openEmptyBottom(rowIndex + 1, columnIndex, array);
 }
 
-function openEmptyTop(rowIndex, columnIndex, array, cellsArray) {
+function openEmptyTop(rowIndex, columnIndex, array) {
   if (rowIndex < 0) return;
-  const isMinesAround = minesAroundCell(...arguments);
+  if (+array[rowIndex][columnIndex].getAttribute("data-mine") === 1) return;
+  const isMinesAround = minesAroundCell(rowIndex, columnIndex, array);
   if (isMinesAround > 0) return;
 
-  openEmptyTop(rowIndex - 1, columnIndex, array, cellsArray);
-  openEmptyLeft(rowIndex, columnIndex - 1, array, cellsArray);
-  openEmptyRight(rowIndex, columnIndex + 1, array, cellsArray);
+  openEmptyTop(rowIndex - 1, columnIndex, array);
+  // openEmptyLeft(rowIndex, columnIndex - 1, array);
+  // openEmptyRight(rowIndex, columnIndex + 1, array);
 }
 
-function openEmptyBottom(rowIndex, columnIndex, array, cellsArray) {
+function openEmptyBottom(rowIndex, columnIndex, array) {
   if (rowIndex === array.length) return;
-  const isMinesAround = minesAroundCell(...arguments);
+  if (+array[rowIndex][columnIndex].getAttribute("data-mine") === 1) return;
+  const isMinesAround = minesAroundCell(rowIndex, columnIndex, array);
   if (isMinesAround > 0) return;
 
-  openEmptyBottom(rowIndex + 1, columnIndex, array, cellsArray);
-  openEmptyLeft(rowIndex, columnIndex - 1, array, cellsArray);
-  openEmptyRight(rowIndex, columnIndex + 1, array, cellsArray);
+  openEmptyBottom(rowIndex + 1, columnIndex, array);
+  // openEmptyLeft(rowIndex, columnIndex - 1, array);
+  // openEmptyRight(rowIndex, columnIndex + 1, array);
 }
