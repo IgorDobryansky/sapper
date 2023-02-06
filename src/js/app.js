@@ -137,26 +137,31 @@ function createCellsGrid(width, height) {
     const index = row * width + col;
     const cell = cells[index];
 
-    if (+cell.getAttribute("data-flag") === 1) {
-      flagsCounter--;
-      flagsCount();
-    }
-
     if (isMine(col, row)) {
       loseGame();
       return;
     }
 
+    if (+cell.getAttribute("data-flag") === 1) {
+      flagsCounter--;
+      flagsCount();
+    }
+    
+
     const count = getMinesCount(col, row);
     if (count !== 0) {
+      cell.setAttribute("data-flag", "0");
       cell.innerHTML = count;
       cell.setAttribute("data-open", "1");
+      flagsCount();
       return;
     }
-
+    
     if (+cell.getAttribute("data-open") === 1) return;
-
+    
     cell.setAttribute("data-open", "1");
+    cell.setAttribute("data-flag", "0");
+    cell.innerHTML = "";
     cell.style.backgroundColor = "rgba(0,0,0,0)";
     cell.style.border = "1px solid black";
 
