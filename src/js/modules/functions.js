@@ -6,7 +6,3 @@ export function createElement(tagName, className) {
   element.className = className;
   return element;
 }
-
-export function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
